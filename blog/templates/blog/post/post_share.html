@@ -1,0 +1,22 @@
+{% extends "blog/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Share post{% endblock title %}
+
+{% block content %}
+  {% if sent %}
+    <p>
+      <a href="{% url 'blog:post_detail' post.id post.slug %}">
+        {{ post.title }}
+      </a> 
+      has been shared with {{ form.cleaned_data.to_email }}.
+    </p>
+  {% else %}
+    <form method='post'>
+        {{ form|crispy }}
+        {% csrf_token %}
+        <input type="submit" value="Share">
+    </form>
+  {% endif %}  
+{% endblock content %}

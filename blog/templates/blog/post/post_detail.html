@@ -1,0 +1,139 @@
+{% extends "blog/base.html" %}
+
+{% load blog_tags %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}{{ post.title }}{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <section class="articles">
+        <div class="column ">
+            <div class="card article">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content has-text-centered">
+                            <p class="title article-title">{{ post }}</p>
+                            <div class="tags has-addons level-item">
+                                <span class="tag is-rounded is-info">@{{ post.author }}</span>
+                                <span class="tag is-rounded">{{ post.created }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content article-body">
+                        <p>{{ post.body|markdown }}</p>
+                        <a class="button is-success"  href="{% url 'blog:post_share' post.id %}">
+                            <div class="icon-text ">
+                                <span class="mr-1">
+                                Share 
+                                </span>
+                                <span class="material-icons">forward_to_inbox</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-6">
+                <div class="card events-card">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            Similar Posts
+                        </p>
+                    </header>
+                    <div class="card-table">
+                        <div class="content">
+                            <table class="table is-fullwidth is-striped">
+                                <tbody>
+                                    {% for post in similar_posts %}
+                                    <tr>
+                                        <td width="5%">
+                                            <span class="material-icons">description</span>
+                                        </td>
+                                        <td>{{ post }}</td>
+                                        <td class="level-right">
+                                            <a class="button is-small is-primary is-light" href="{% url 'blog:post_detail' post.id post.slug %}">
+                                            Check
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                        
+            <div class="mt-6">
+                <p class="is-size-6 has-text-centered has-text-weight-medium	">
+
+                
+                {% if post.comments.all %}
+                    {{ post.comments.count }} comment{{ post.comments.count|pluralize }} on &#8220;{{ post }}&#8221;
+                {% else %}
+                    No comments yet.
+                {% endif %}
+                </p>
+            </div>
+
+            {% for comment in post.comments.all %}
+              
+            <div class="box mt-3">
+                <article class="media">
+                  
+                  <div class="media-content">
+                    <div class="content">
+                      <p>
+                        <strong>{{ comment.name }}</strong> <small class="is-size-7">{{ comment.commented }}</small>
+                        <br>
+                        <hr>
+                        <span class="is-size-6">
+                            {{ comment.body }}
+                        </span>
+                      </p>
+                    </div>
+                    <nav class="level is-mobile">
+                      <div class="level-left">
+                        <a class="level-item" aria-label="reply">
+                            <span class="material-icons">
+                                reply
+                            </span>
+                        </a>
+                        <a class="level-item" aria-label="retweet">
+                            <span class="material-icons">
+                                sync
+                            </span>
+                        </a>
+                        <a class="level-item" aria-label="like">
+                            <span class="material-icons">
+                                favorite
+                            </span>
+                        </a>
+                      </div>
+                    </nav>
+                  </div>
+                </article>
+            </div>
+
+            {% endfor %}
+
+            <p class="is-size-4 has-text-dark mt-6">
+                <strong>Leave a Reply</strong>
+            </p>
+            <p>
+                Your email address will not be published. Required fields 
+                are marked *
+            </p>
+            <form class="mt-5"  method="post">
+                {{ form|crispy }}
+                {% csrf_token %}
+                <input class="button is-rounded is-success is-outlined mt-3" type="submit" value="Post Comment">
+            </form>
+
+            
+        </div>
+    </section>
+</div>
+{% endblock content %}

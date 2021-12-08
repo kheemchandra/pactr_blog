@@ -1,0 +1,9 @@
+<ul class="menu-list">
+    {% for post in recent_posts %}
+    <li>
+        <a  href="{% url 'blog:post_detail' post.id post.slug %}">
+            <em class="is-size-6">{{post|truncatewords:5}}</em>
+        </a>
+    </li>
+    {% endfor %}
+</ul>

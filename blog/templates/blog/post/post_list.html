@@ -1,0 +1,40 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+
+{% block title %}Posts{% endblock title %}
+{% block content %}
+<div class="content is-medium">
+    {% for post in page_obj %}
+    <div class="box">
+        <h3 class="title is-4  ">{{ post }}</h3>
+        <div class="icon-text">
+            <span class="material-icons ">
+            discount
+            </span>
+            {% for tag in post.tags.all %}
+            <span class="tag is-light is-success is-rounded mx-2">
+            <a href="{% url 'blog:post_tag' tag.name %}">{{ tag }}</a>
+            </span>
+            {% endfor %}
+        </div>
+        <article class="message is-primary mt-5">
+            <div class="message-body">
+                {{ post.body|markdown|truncatewords:50 }}
+            </div>
+        </article>
+        <a class="button is-primary" href="{% url 'blog:post_detail' post.id post.slug %}">
+        Read More
+        </a>
+    </div>
+    {% empty %}  
+    There are no posts yet.
+    {% endfor %}
+</div>
+{% endblock content %}
+{% block footer %}
+<div class="columns is-mobile is-centered">
+    <div class="field is-grouped is-grouped-multiline">
+        {% include "blog/paginator.html" with page_obj=page_obj %}
+    </div>
+</div>
+{% endblock footer %}

@@ -1,0 +1,66 @@
+{% load static %}
+{% load blog_tags %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+        <!-- <link rel="stylesheet" href="{% static 'css/base.css' %}"> -->
+        <title>{% block title %}{% endblock title %}</title>
+    </head>
+    <body>
+        <section class="section">
+            <div class="container">
+                <div class="columns">
+                    <div class="column is-3">
+                        <aside class="is-medium menu">
+                            <p class="mb-4">
+                            {% num_posts as num %}
+                            {% if num %}
+                                There are {{ num }} posts so far.
+                            {% else %} 
+                                No posts yet.
+                            {% endif %}
+                            </p>
+                            
+                            <a class="is-size-6" href="{% url 'blog:latest_feed' %}">
+                                <span class="icon-text">                                
+                                    <span >News RSS</span>
+                                    <span class="material-icons">rss_feed</span>
+                                </span>
+
+                            </a>
+                            
+                            <p class="menu-label mt-4">
+                                <strong>Most recent posts</strong>
+                            </p>
+                            {% most_recent_posts  4 %}
+                            
+                            
+                            <!-- tag1 -->
+
+
+                            <p class="menu-label mt-6">
+                                <strong>Most commented posts</strong>
+                            </p>
+                            {% most_commented_posts 4 %}
+                            
+                            <!-- tag2 -->
+                            
+                        </aside>
+                    </div>
+                    <div class="column is-9">
+                        {% block content %}{% endblock content %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer class="footer">
+            {% block footer %}
+            {% endblock footer %}
+        </footer>
+    </body>
+</html>
