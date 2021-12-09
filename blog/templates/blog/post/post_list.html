@@ -22,7 +22,7 @@
                 {{ post.body|markdown|truncatewords:50 }}
             </div>
         </article>
-        <a class="button is-primary" href="{% url 'blog:post_detail' post.id post.slug %}">
+        <a class="button is-primary" href="{{ post.get_absolute_url }}">
         Read More
         </a>
     </div>

@@ -1,0 +1,29 @@
+{{ form.non_field_errors }}
+
+{% for field in form %}
+    
+
+    <div class="fieldwrapper">
+        {{ field.errors }}
+        <label for="{{ field.id_for_label }}" class="label">{{ field.label }}</label>
+        <p class="control">
+        
+        {% if field.field.widget.input_type == form.TextArea %}
+
+        <textarea id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="textarea" ></textarea>
+
+        {% else %}
+        
+        <input id="{{ field.id_for_label }}" name="{{ field.html_name }}" class="input" type="{{ field.field.widget.input_type }}">
+
+        {% endif %}
+
+
+        </p>
+    </div>
+    
+
+{% endfor %}
+
+  
+  

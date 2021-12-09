@@ -1,6 +1,8 @@
 {% extends "blog/base.html" %}
 
-{% load crispy_forms_tags %}
+{% load blog_tags %}
+
+
 
 {% block title %}Share post{% endblock title %}
 
@@ -14,9 +16,13 @@
     </p>
   {% else %}
     <form method='post'>
-        {{ form|crispy }}
         {% csrf_token %}
-        <input type="submit" value="Share">
+
+        {% form_snippet form %}
+
+
+        <input class="button is-rounded is-success is-outlined mt-3" type="submit" value="Share">
+
     </form>
   {% endif %}  
 {% endblock content %}

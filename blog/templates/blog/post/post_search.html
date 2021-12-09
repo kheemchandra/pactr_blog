@@ -1,0 +1,32 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+{% block title %}Post Search{% endblock title %}
+{% block content %}
+<div class="container has-text-centered">
+    <div class="column is-6 is-offset-3">
+        <div class="box">
+            {% if text %}
+            <ul>
+                {% for post in posts %}
+                  <li>
+                        <a href="{% url 'blog:post_detail' post.id post.slug %}">{{ post }}</a>
+                        <br>
+                        {{ post.headline|safe }} 
+
+                  </li>
+                  <hr>
+                {% empty %} 
+                    <li> &#8220;{{ text }}&#8221; is not found. Please search another text.</li>
+                {% endfor %}
+            </ul>
+            {% else %} 
+            <form  method="post">
+                {% csrf_token %}
+                {% form_snippet form %}
+                <input class="button  is-link is-outlined mt-3" type="submit" value="Search">
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

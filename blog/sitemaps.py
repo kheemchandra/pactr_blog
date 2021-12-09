@@ -1,6 +1,6 @@
 from django.contrib.sitemaps import Sitemap 
 
-from .models import Post, Comment 
+from .models import Post 
 
 class PostSitemap(Sitemap):
     changefreq = "weekly"
@@ -16,15 +16,4 @@ class PostSitemap(Sitemap):
         return obj.get_absolute_url()
 
 
-class CommentSitemap(Sitemap):
-    changefreq = "daily"
-    priority = 0.5
-
-    def items(self):
-        return Comment.objects.all()
-
-    def lastmod(self, obj):
-        return obj.commented    
-
-    def location(self, obj):
-        return obj.post.get_absolute_url()
+        

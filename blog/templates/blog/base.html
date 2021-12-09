@@ -1,5 +1,7 @@
 {% load static %}
+
 {% load blog_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -28,8 +30,16 @@
                             
                             <a class="is-size-6" href="{% url 'blog:latest_feed' %}">
                                 <span class="icon-text">                                
-                                    <span >News RSS</span>
+                                    <span >RSS</span>
                                     <span class="material-icons">rss_feed</span>
+                                </span>
+
+                            </a>
+
+                            <a class="is-size-6" href="{% url 'blog:post_search' %}">
+                                <span class="icon-text ml-5">                                
+                                    <span class="material-icons">find_in_page</span>
+                                    <span >Search</span>
                                 </span>
 
                             </a>

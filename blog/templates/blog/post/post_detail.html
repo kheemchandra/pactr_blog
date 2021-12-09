@@ -1,7 +1,7 @@
 {% extends "blog/base.html" %}
 
+
 {% load blog_tags %}
-{% load crispy_forms_tags %}
 
 
 {% block title %}{{ post.title }}{% endblock title %}
@@ -52,7 +52,7 @@
                                         </td>
                                         <td>{{ post }}</td>
                                         <td class="level-right">
-                                            <a class="button is-small is-primary is-light" href="{% url 'blog:post_detail' post.id post.slug %}">
+                                            <a class="button is-small is-primary is-light" href="{{ post.get_absolute_url }}">
                                             Check
                                             </a>
                                         </td>
@@ -127,8 +127,11 @@
                 are marked *
             </p>
             <form class="mt-5"  method="post">
-                {{ form|crispy }}
                 {% csrf_token %}
+
+                {% form_snippet form %}
+
+
                 <input class="button is-rounded is-success is-outlined mt-3" type="submit" value="Post Comment">
             </form>
 

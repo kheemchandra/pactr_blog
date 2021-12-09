@@ -28,3 +28,8 @@ def most_commented_posts(cnt = 5):
 def markdown_post(text):
     html_text  = markdown.markdown(text)
     return mark_safe(html_text)
+
+
+@register.inclusion_tag('blog/form_snippet.html')
+def form_snippet(form):
+    return {'form': form}

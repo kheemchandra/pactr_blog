@@ -3,9 +3,17 @@ from django.core.paginator import Paginator
 from django.views.generic import ListView
 from django.core.mail import send_mail
 from django.db.models import Count 
+from django.contrib.postgres.search import (
+    SearchQuery, 
+    SearchRank, 
+    SearchVector, 
+    SearchHeadline,
+    TrigramSimilarity,
+)
+
 
 from .models import Post 
-from .forms import ShareForm, CommentForm
+from .forms import ShareForm, CommentForm, SearchForm
 
 
 def post_list(request, tag=None):
@@ -73,4 +81,38 @@ def post_share(request, post_id):
                    'form': form,
                    'post': post,
                    })
+
+
+def post_search(request):
+    posts = None
+    text = ''
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data['text']
+            vector = SearchVector('title', weight='A') + SearchVector('body', weight='B')
+            query = SearchQuery(text)
+            # posts1 = Post.publish.annotate(
+            #             rank=SearchRank(vector, query)
+            #         ).filter(rank__gte=0.1).order_by('-rank')[:5]
+
+            # posts2 = Post.publish.annotate(
+            #             headline=SearchHeadline(
+            #                 'body',
+            #                 query,
+            #                 start_sel='<em class="has-background-warning">',
+            #                 stop_sel='</em>',
+            #             ),
+            #         )
+            
+            posts = Post.publish.annotate(
+                        similarity=TrigramSimilarity('body', text)
+                    ).filter(similarity__gt=0.1).order_by('-similarity')
+
+    form = SearchForm()
+    return render(request,
+                  'blog/post/post_search.html',
+                  {'form': form,
+                  'posts': posts,
+                  'text': text})
 

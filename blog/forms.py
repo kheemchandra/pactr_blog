@@ -14,6 +14,13 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment 
         fields = ['body', 'name', 'email']
+        labels = {
+            'body': 'Comment*',
+            'name': 'Name*',
+            'email': 'Email*',
+        }
+        
 
 
-    
+class SearchForm(forms.Form):
+    text = forms.CharField(max_length=200, label='Enter your text')
